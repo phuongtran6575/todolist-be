@@ -22,6 +22,6 @@ async def add_todo(todo: Todo, session: SessionDepends):
 async def update_todo(todo: Todo, session: SessionDepends):
     return await todo_service.update_todo(todo, session)
 
-@router.delete("/todo")
+@router.delete("/todo/{todo_id}")
 async def delete_todo(todo_id:int, session: SessionDepends):
     return await todo_service.delete_todo (todo_id, session)

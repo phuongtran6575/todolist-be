@@ -5,11 +5,11 @@ from controller.todo_controller import router as todo_router
 app = FastAPI()
 origins = [
     "http://localhost:5173",  # Replace with the origin of your React app
-    "http://localhost:8000",  # Add other origins as needed
+    "http://localhost:3000",  # Add other origins as needed
 ]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"] ,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

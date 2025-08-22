@@ -18,14 +18,14 @@ async def add_todo(todo: Todo, session: Session):
     return todo
 
 async def update_todo(todo: Todo, session: Session):
-    statement = select.todo(Todo).where(Todo.id == todo.id)
+    statement = select.select(Todo).where(Todo.id == todo.id)
     todo_to_update = session.exec(statement).first()
     todo_to_update.name = todo.name
     session.add(todo_to_update)
     return todo_to_update
 
 async def delete_todo(todo_id: int, session: Session):
-    statement = select.todo(Todo).where(Todo.id == todo_id)
+    statement = select(Todo).where(Todo.id == todo_id)
     todo = session.exec(statement).first()
     session.delete(todo)
     session.commit()

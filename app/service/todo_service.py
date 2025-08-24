@@ -1,3 +1,4 @@
+from datetime import datetime
 from models.todo_model import Todo
 from sqlmodel import Session, select
 
@@ -12,10 +13,20 @@ async def get_todo_by_id(todo_id: int, session: Session):
     return todo
 
 async def add_todo(todo: Todo, session: Session):
-    session.add(todo)
+    parse_created_at = datetime.fromisoformat(todo.created_at.replace("Z", "+00:00")) 
+    parse_due_at = datetime.fromisoformat(todo.due_at.replace("Z", "+00:00")) 
+    todo_data= Todo(
+        id = todo.id,
+        description=todo.description,
+        isDone= todo.isDone,
+        name=todo.name,
+        created_at=parse_created_at,
+        due_at=parse_due_at
+    )
+    session.add(todo_data)
     session.commit()
-    session.refresh(todo)
-    return todo
+    session.refresh(todo_data)
+    return todo_data
 
 async def update_todo(todo: Todo, session: Session):
     statement = select.select(Todo).where(Todo.id == todo.id)

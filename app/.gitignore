@@ -34,21 +34,29 @@ ENV/
 env.bak/
 venv.bak/
 
-# FastAPI specific
+# Databases (local only)
 *.db
 *.sqlite3
 instance/
+
+# Logs
 *.log
 logs/
+alembic.log   # alembic log file nếu có
+
+# Alembic
+# ⚠️ Giữ lại alembic/env.py, alembic/versions/*
+# Ignore file config cá nhân (nếu tạo riêng)
+alembic.local.ini
 
 # Pytest / Coverage
 .pytest_cache/
 .coverage
+.coverage.*
+.cache
 htmlcov/
 .tox/
 .nox/
-.coverage.*
-.cache
 nosetests.xml
 coverage.xml
 *.cover

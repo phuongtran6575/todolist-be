@@ -13,14 +13,13 @@ async def get_todo_by_id(todo_id: int, session: Session):
     return todo
 
 async def add_todo(todo: Todo, session: Session):
-    parse_created_at = datetime.fromisoformat(todo.created_at.replace("Z", "+00:00")) 
     parse_due_at = datetime.fromisoformat(todo.due_at.replace("Z", "+00:00")) 
     todo_data= Todo(
         id = todo.id,
         description=todo.description,
         isDone= todo.isDone,
         name=todo.name,
-        created_at=parse_created_at,
+        created_at=todo.created_at,
         due_at=parse_due_at
     )
     session.add(todo_data)

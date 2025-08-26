@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware # Import CORSMiddleware
 from controller.todo_controller import router as todo_router
-
+from controller.auth_controller import router as auth_router
 app = FastAPI()
 origins = [
     "http://localhost:5173",  # Replace with the origin of your React app
@@ -19,3 +19,4 @@ async def root():
     return {"message": "Hello World"}
 
 app.include_router(todo_router)
+app.include_router(auth_router)

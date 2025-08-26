@@ -1,6 +1,7 @@
-from sqlmodel import SQLModel
+from typing import Optional
+from sqlmodel import Field, SQLModel
 
-class User(SQLModel):
-    id: int
-    username: str
-    password: str
+class User(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    username: Optional[str]
+    password: Optional[str]

@@ -6,8 +6,10 @@ async def get_user_by_username(username: str, session: Session):
     user_db = session.exec(statement).first()
     return user_db
 
-async def login():
-    return
 
-async def register():
-    return
+
+async def registered(user:User ,session:Session):
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return user

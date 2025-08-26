@@ -18,9 +18,9 @@ async def get_todo_by_id(todo_id:int,session: SessionDepends):
 async def add_todo(todo: Todo, session: SessionDepends):
     return await todo_service.add_todo(todo, session)
 
-@router.put("/")
-async def update_todo(todo: Todo, session: SessionDepends):
-    return await todo_service.update_todo(todo, session)
+@router.put("/{todo_id}")
+async def update_todo(todo_id:int, todo: Todo, session: SessionDepends):
+    return await todo_service.update_todo(todo_id, todo, session)
 
 @router.delete("/{todo_id}")
 async def delete_todo(todo_id:int, session: SessionDepends):

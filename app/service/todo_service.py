@@ -27,14 +27,21 @@ async def add_todo(todo: Todo, session: Session):
     session.refresh(todo_data)
     return todo_data
 
-async def update_todo(todo: Todo, session: Session):
-    statement = select(Todo).where(Todo.id == todo.id)
-    parse_due_at = datetime.fromisoformat(todo.due_at.replace("Z", "+00:00"))
+async def update_todo(todo_id: int, todo: Todo, session: Session):
+    statement = select(Todo).where(Todo.id == todo_id)
     todo_to_update = session.exec(statement).first()
-    todo_to_update.description= todo.description
+    if not todo_to_update:
+        return None   # hoặc raise HTTPException(404, "Todo not found")
+
+    # parse datetime
+    parse_due_at = datetime.fromisoformat(todo.due_at.replace("Z", "+00:00"))
+
+    # update fields
+    todo_to_update.description = todo.description
     todo_to_update.isDone = todo.isDone
-    todo_to_update.due_at= parse_due_at
+    todo_to_update.due_at = parse_due_at
     todo_to_update.name = todo.name
+
     session.add(todo_to_update)
     session.commit()
     session.refresh(todo_to_update)

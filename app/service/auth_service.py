@@ -19,8 +19,13 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 def get_current_user(token: str, session: Session):
-    
-    return
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    user_id = payload.get("sub")
+    if user_id is None:
+        return None
+    statement = select(User).where(User.id == int(user_id))
+    user_db = session.exec(statement).first()
+    return user_db
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
@@ -42,7 +47,7 @@ async def registered(user:User ,session:Session):
     return user_db
 
 async def delete(user_id:int, session: Session):
-    statement = select(User).where(user_id == User.id)
+    statement = select(User).where(User.id == user_id)
     user_db = session.exec(statement).first()
     session.delete(user_db)
     session.commit()

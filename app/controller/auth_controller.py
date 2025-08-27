@@ -12,8 +12,9 @@ oauth2_schema = OAuth2PasswordBearer(tokenUrl="auth/token")
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
 @router.get("/me")
-async def read_me(token: Annotated[str, Depends(oauth2_schema)]):
-    return {"token": token}
+async def read_me(token: Annotated[str, Depends(oauth2_schema)] ,session: SessionDepends):
+    current_user = auth_service.get_current_user(token, session)
+    return {"id": current_user.id, "username": current_user.username}
 
 @router.post("/token")
 async def login(session: SessionDepends,form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):

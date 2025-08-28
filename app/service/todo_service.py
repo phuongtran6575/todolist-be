@@ -10,6 +10,8 @@ async def get_all_todos(session: Session):
 async def get_todo_by_id(todo_id: int, session: Session):
     statement = select(Todo).where(Todo.id == todo_id)
     todo = session.exec(statement).first()
+    if not todo:
+        return None
     return todo
 
 async def add_todo(todo: Todo, session: Session):
@@ -50,6 +52,8 @@ async def update_todo(todo_id: int, todo: Todo, session: Session):
 async def delete_todo(todo_id: int, session: Session):
     statement = select(Todo).where(Todo.id == todo_id)
     todo = session.exec(statement).first()
+    if not todo:
+        return None
     session.delete(todo)
     session.commit()
-    return {"status":"delete"}
+    return {"status":"delete successfull",}

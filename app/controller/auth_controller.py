@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from core.constants import ACCESS_TOKEN_EXPIRE_MINUTES
 from service import auth_service
 from database.sqlite_database import SessionDepends
-from models.user_model import User 
+from models.todo_model import User 
 
 
 oauth2_schema = OAuth2PasswordBearer(tokenUrl="auth/token")

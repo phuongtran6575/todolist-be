@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from sqlmodel import Session, select
 from core.constants import ALGORITHM, SECRET_KEY
-from models.user_model import User
+from models.todo_model import User
 import jwt
 from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext

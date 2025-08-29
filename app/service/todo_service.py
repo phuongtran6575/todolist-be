@@ -1,11 +1,21 @@
 from datetime import datetime
 from models.todo_model import Todo
-from sqlmodel import Session, select
+from sqlmodel import Session, func, select
 
-async def get_all_todos(user_id:int, session: Session, ):
-    statement = select(Todo).where(Todo.user_id == user_id)
+async def get_all_todos(user_id:int, session: Session, page:int, limit: int):
+    offset = (page - 1) * limit
+
+    statement = select(Todo).where(Todo.user_id == user_id).offset(offset).limit(limit)
     todos = session.exec(statement).all()
-    return todos
+    total_statement = select(func.count()).select_from(Todo).where(Todo.user_id == user_id)
+    total = session.exec(total_statement).one()  # trả về tuple (count,)
+
+    return {
+        "todos": todos,
+        "total": total,
+        "page": page,
+        "limit":limit
+    }
 
 async def get_todo_by_id( user_id: int, todo_id: int, session: Session,):
     statement = select(Todo).where(Todo.id == todo_id)
@@ -16,14 +26,14 @@ async def get_todo_by_id( user_id: int, todo_id: int, session: Session,):
 
 async def add_todo(user_id:int, todo: Todo, session: Session, ):
     parse_due_at = datetime.fromisoformat(todo.due_at.replace("Z", "+00:00")) 
-    parse_created_at = datetime.fromisoformat(todo.created_at.replace("Z", "+00:00"))
+    #parse_created_at = datetime.fromisoformat(todo.created_at.replace("Z", "+00:00"))
     todo_data= Todo(
         id = todo.id,
         description=todo.description,
         isDone= todo.isDone,
         name=todo.name,
-        #created_at=todo.created_at,
-        created_at=parse_created_at,
+        created_at=todo.created_at,
+        #created_at=parse_created_at,
         due_at=parse_due_at,
         user_id=user_id
     )

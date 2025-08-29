@@ -12,7 +12,7 @@ oauth2_schema = OAuth2PasswordBearer(tokenUrl="auth/token")
 @router.get("/")
 async def get_all_todos(token:Annotated[str, Depends(oauth2_schema)] ,session: SessionDepends ):
     current_user = auth_service.get_current_user(token, session)
-    return await todo_service.get_all_todos(current_user.id, session)
+    return await todo_service.get_all_todos(current_user.id, session, 1, 5)
 
 @router.get("/{todo_id}")
 async def get_todo_by_id(token: Annotated[str, Depends(oauth2_schema)] ,todo_id:int, session: SessionDepends):
